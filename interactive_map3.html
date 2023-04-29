@@ -1,23 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <title>Paris Business Map</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Load Leaflet CSS and JavaScript -->
-    <link rel="stylesheet" href="leaflet/leaflet.css">
-    <script src="turf.js"></script>
-  </head>
-  <body>
-    <h1>Paris Business Map</h1>
-    <!-- Create a div to hold the map -->
-    <div id="map" style="height: 500px;"></div>
-    <label for="shop-type">Select shop type:</label>
-    <select id="shop-type">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Paris Business Map</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Load Leaflet CSS and JavaScript -->
+  <link rel="stylesheet" href="leaflet/leaflet.css">
+</head>
+
+<body>
+  <h1>Paris Business Map</h1>
+  <!-- Create a div to hold the map -->
+  <div id="map" style="height: 500px;"></div>
+  <label for="shop-type">Select shop type:</label>
+  <select id="shop-type">
     <option value="all">All</option>
     <option value="Épicerie">Épicerie</option>
     <option value="Primeur">Primeur</option>
-    <option value="Alimentation générale et produits de première nécessité">Alimentation générale et produits de première nécessité</option>
+    <option value="Alimentation générale et produits de première nécessité">Alimentation générale et produits de
+      première nécessité</option>
     <option value="Articles médicaux et orthopédiques">Articles médicaux et orthopédiques</option>
     <option value="Artisanat d'art">Artisanat d'art</option>
     <option value="Blanchisserie-teinturerie">Blanchisserie-teinturerie</option>
@@ -40,19 +42,16 @@
     <option value="Librairie">Librairie</option>
     <option value="Autre">Autre</option>
     </div>
-    
+
     <!-- Add more options for other types of shops as needed -->
-    </select>
-    <p>Surface density: <span id="surfaceDensity"></span></p>
+  </select>
+  <p>Surface density: <span id="surfaceDensity"></span></p>
 
 
-    <!-- Load the JavaScript file that initializes the map and markers -->
-    <script src="leaflet/leaflet.js"></script>
-    <script src="javascript3.js"></script>
-    
-  </body>
+  <!-- Load the JavaScript file that initializes the map and markers -->
+  <script src="leaflet/leaflet.js"></script>
+  <script src="javascript3.js"></script>
+
+</body>
+
 </html>
-
-
-
-
