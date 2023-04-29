@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+
+  <link rel="shortcut icon" href="image\logo_ensg.png"> <!--logo de l'ENSG pour icon de l'onglet--> 
+
+  <title>interface pour exportation</title>
+
+  <link rel="stylesheet" href="style.css"> <!-- import de la feuille de style --> 
+  
+  
+ 
+  <!-- .....................................import de la carte ...........................................--> 
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+
+  integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+  crossorigin=""/>
+  
+  <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+  integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+  crossorigin=""></script>
+  
+</head>
+
+
+<body> 
+  
+     
+  <h1 id="divTitre">EXPORTER STAGES EN JSON</h1>
+      
+  <div id="carte"> <!-- carte des stages selectionnés-->
+  </div>
+
+  <div id="boutonExporter"> <!-- bouton permettant de Exporter les données en format JSON-->
+  <a href="#" >
+    <button  type="button" id="exporter" onClick="Exporter()" > Exporter </button>
+  </div>
+ 
+  <div id="divTable">  <!-- div contenant le tableau des ranks et stages -->
+    <table id="table" >
+      <thead><!-- en-tête -->
+        <tr><!-- première ligne -->
+          <th> Ville : </th>
+          <th> Rank : </th>
+          <th> Année : </th>
+        </tr>
+      </thead>
+    </table>
+  </div>
+  
+
+
+  
+    <!-- titres des trois formulaires-->
+
+    <h3 id="divTitreAnnee">année min</h3>
+    <h3 id="divTitreRankMin">rank min</h3>
+    <h3 id="divTitreRankMax">rank max</h3>
+
+
+  <!-- formulaire permettant à l'utilisateur de selectionner la note la plus haute pour la selection 
+        de la liste de stage-->
+  <form name="f" id="RankMAX">
+
+    <select name="dmc">
+      <option class= option value="20"  > rank max </option> <!-- note max par défault-->
+      <option class= option value="0"  > 0 </option>
+      <option class= option value="1"  > 1 </option>
+      <option class= option value="2"  > 2 </option>
+      <option class= option value="3"  > 3 </option>
+      <option class= option value="4"  > 4 </option>
+      <option class= option value="5"  > 5 </option>
+      <option class= option value="6"  > 6 </option>
+      <option class= option value="7"  > 7 </option>
+      <option class= option value="8"  > 8 </option>
+      <option class= option value="9"  > 9 </option>
+      <option class= option value="10"  > 10 </option>
+      <option class= option value="11"  > 11 </option>
+      <option class= option value="12"  > 12 </option>
+      <option class= option value="13"  > 13 </option>
+      <option class= option value="14"  > 14 </option>
+      <option class= option value="15"  > 15 </option>
+      <option class= option value="16"  > 16 </option>
+      <option class= option value="17"  > 17 </option>
+      <option class= option value="18"  > 18 </option>
+      <option class= option value="19"  > 19 </option>
+      <option class= option value="20"  > 20 </option>
+
+    </select>
+  </form>
+
+
+  <!-- formulaire permettant à l'utilisateur de selectionner la note la plus basse pour la selection 
+      de la liste de stage-->
+  <form name="g" id="RankMIN">
+
+    <select name="dmd">
+      <option class= option value="0"  > rank min </option> <!-- note min par défault-->
+      <option class= option value="0"  > 0 </option>
+      <option class= option value="1"  > 1 </option>
+      <option class= option value="2"  > 2 </option>
+      <option class= option value="3"  > 3 </option>
+      <option class= option value="4"  > 4 </option>
+      <option class= option value="5"  > 5 </option>
+      <option class= option value="6"  > 6 </option>
+      <option class= option value="7"  > 7 </option>
+      <option class= option value="8"  > 8 </option>
+      <option class= option value="9"  > 9 </option>
+      <option class= option value="10"  > 10 </option>
+      <option class= option value="11"  > 11 </option>
+      <option class= option value="12"  > 12 </option>
+      <option class= option value="13"  > 13 </option>
+      <option class= option value="14"  > 14 </option>
+      <option class= option value="15"  > 15 </option>
+      <option class= option value="16"  > 16 </option>
+      <option class= option value="17"  > 17 </option>
+      <option class= option value="18"  > 18 </option>
+      <option class= option value="19"  > 19 </option>
+      <option class= option value="20"  > 20 </option>
+    </select>
+  </form>
+
+  <!-- formulaire permettant à l'utilisateur de selectionner l'année de départ pour la selection 
+      de la liste de stage-->
+  <form name="h" id="AnneeMin">
+
+    <select name="dme">
+      <option class= option value="0"  > année min </option> <!-- année min par défault-->
+      <option class= option value= "2014" > 2014 </option>
+      <option class= option value= "2015" > 2015 </option>
+      <option class= option value= "2016" > 2016 </option>
+      <option class= option value= "2017" > 2017 </option>
+      <option class= option value= "2018" > 2018 </option>
+      <option class= option value= "2019" > 2019 </option>
+      <option class= option value= "2020" > 2020 </option>
+      <option class= option value= "2021" > 2021 </option>
+    </select>
+
+  </form>
+  
+
+  <!-- bouton permettant de valider les trois choix de l'utilisateur : anneemin, rankmin, rankmax
+      il permet aussi de mettre à jour les données du tableau-->
+
+  <div id="boutonValider"> 
+    <a href="#" >
+      <button  type="button" id="valider" onClick="Selection_Utilisateur()"> valider </button>
+  </div>
+
+  
+
+
+
+
+      
+  <!-- lecture du fichier javascript permettant l'interaction-->
+
+  <script src="javascript.js"></script> 
+  
+ 
+</body>
+</html>

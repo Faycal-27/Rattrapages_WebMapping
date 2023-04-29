@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Paris Business Map</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Load Leaflet CSS and JavaScript -->
+    <link rel="stylesheet" href="leaflet/leaflet.css">
+    <script src="turf.js"></script>
+  </head>
+  <body>
+    <h1>Paris Business Map</h1>
+    <!-- Create a div to hold the map -->
+    <div id="map" style="height: 500px;"></div>
+    <label for="shop-type">Select shop type:</label>
+    <select id="shop-type">
+    <option value="all">All</option>
+    <option value="Épicerie">Épicerie</option>
+    <option value="Primeur">Primeur</option>
+    <option value="Alimentation générale et produits de première nécessité">Alimentation générale et produits de première nécessité</option>
+    <option value="Articles médicaux et orthopédiques">Articles médicaux et orthopédiques</option>
+    <option value="Artisanat d'art">Artisanat d'art</option>
+    <option value="Blanchisserie-teinturerie">Blanchisserie-teinturerie</option>
+    <option value="Boucherie - charcuterie - rôtisserie">Boucherie - charcuterie - rôtisserie</option>
+    <option value="Boulangerie - pâtisserie">Boulangerie - pâtisserie</option>
+    <option value="Bricolage">Bricolage</option>
+    <option value="Caviste - Brasserie">Caviste - Brasserie</option>
+    <option value="Chocolaterie - Pâtisserie">Chocolaterie - Pâtisserie</option>
+    <option value="Cosmétique">Cosmétique</option>
+    <option value="Disquaire">Disquaire</option>
+    <option value="Equipement informatique">Equipement informatique</option>
+    <option value="Fromagerie">Fromagerie</option>
+    <option value="Jouets - Jeux">Jouets - Jeux</option>
+    <option value="Librairie">Librairie</option>
+    <option value="Matériels de télécommunication">Matériels de télécommunication</option>
+    <option value="Pharamacies et parapharmacies">Pharamacies et parapharmacies</option>
+    <option value="Poissonerie">Poissonerie</option>
+    <option value="Presse et papeterie">Presse et papeterie</option>
+    <option value="Restaurant ou traiteur">Restaurant ou traiteur</option>
+    <option value="Librairie">Librairie</option>
+    <option value="Autre">Autre</option>
+    </div>
+    
+    <!-- Add more options for other types of shops as needed -->
+    </select>
+    <p>Surface density: <span id="surfaceDensity"></span></p>
+
+
+    <!-- Load the JavaScript file that initializes the map and markers -->
+    <script src="leaflet/leaflet.js"></script>
+    <script src="javascript3.js"></script>
+    
+  </body>
+</html>
+
+
+
+
