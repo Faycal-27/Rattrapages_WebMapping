@@ -159,6 +159,7 @@ function calculateSurfaceDensity(selectedShops, neighborhoodsLayer) {
 
 function calculateWebsiteDensity(selectedShops) {
   const totalSelectedShops = selectedShops.length;
+  console.log("___", selectedShops);
   const totalSelectedShopsWithoutWebsite = selectedShops.reduce((sum, shop) => sum + (shop.properties.website ?? false ? 0 : 1), 0);
   return totalSelectedShopsWithoutWebsite / totalSelectedShops;
 } // test
