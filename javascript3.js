@@ -128,6 +128,7 @@ document.getElementById('shop-type').addEventListener('change', function (event)
 
   // Update the HTML elements with the calculated statistics
   surfaceDensityElement.textContent = `Surface density: ${surfaceDensity}`;
+
   websiteDensityElement.textContent = `Website density: ${websiteDensity}`;
 });
 
@@ -160,7 +161,7 @@ function calculateSurfaceDensity(selectedShops, neighborhoodsLayer) {
 function calculateWebsiteDensity(selectedShops) {
   const totalSelectedShops = selectedShops.length;
   console.log("___", selectedShops);
-  const totalSelectedShopsWithoutWebsite = selectedShops.reduce((sum, shop) => sum + (shop.properties.website ?? false ? 0 : 1), 0);
+  const totalSelectedShopsWithoutWebsite = selectedShops.reduce((sum, shop) => sum + (shop.feature.properties.site_internet ?? false ? 0 : 1), 0);
   return totalSelectedShopsWithoutWebsite / totalSelectedShops;
 } // test
 
