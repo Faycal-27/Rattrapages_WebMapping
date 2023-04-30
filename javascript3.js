@@ -19,184 +19,90 @@ fetch('quartier_paris.geojson')
 
 // Load the shops GeoJSON data and add it to the map
 var shopsLayer = L.geoJSON(null, {
-pointToLayer: function(feature, latlng) {
-  var color;
-  switch (feature.properties.type_de_commerce) {
-      case 'Épicerie fine':
-          color = 'blue';
-          break;
-      case 'Primeure':
-          color = 'brown';
-          break;
-      case 'Fleuriste':
-          color = 'green';
-          break;
-      case 'Alimentation générale et produits de première nécessité':
-          color = 'purple';
-          break;
-      case 'Articles médicaux et orthopédiques':
-          color = 'pink';
-          break;
-      case "Artisanat d'art":
-          color = 'red';
-          break;
-      case "Blanchisserie-teinturerie":
-          color = 'orange';
-          break;
-      case "Boucherie - charcuterie - rôtisserie":
-          color = 'black';
-          break;
-      case "Boulangerie - pâtisserie":
-          color = 'grey';
-          break;
-      case "Bricolage":
-          color = 'white';
-          break;
-      case "Caviste - Brasserie":
-          color = 'yellow';
-          break;
-      case "Chocolaterie - Pâtisserie":
-          color = 'gold';
-          break;
-      case "Cosmétique":
-          color = 'teal';
-          break;
-      case "Disquaire":
-          color = 'lime';
-          break;
-      case "Equipement informatique":
-          color = 'Navy';
-          break;
-      case "Fromagerie":
-          color = 'Chocolate';
-          break;
-      case "Jouets - Jeux":
-          color = 'DarkRed';
-          break;
-      case "Librairie":
-          color = 'LightCoral';
-          break;
-      case "Matériels de télécommunication":
-          color = 'lightsalmon';
-      case "Pharamacies et parapharmacies":
-          color = 'DarkKhaki';
-          break;
-      case "Poissonerie":
-          color = 'PaleTurquoise';
-          break;
-      case "Presse et papeterie":
-          color = 'Tan';
-          break;
-      case "Restaurant ou traiteur":
-          color = 'MistyRose';
-          break;
-      case "Librairie":
-          color = 'Maroon';
-          break;
-      case "Autre":
-          color = 'MistyRose';
-          break;
-      default:
-          color = 'Olive';
-  }
-  return L.circleMarker(latlng, {
+  pointToLayer: function (feature, latlng) {
+    var color;
+    
+    return L.circleMarker(latlng, {
       radius: 5,
       fillColor: color,
       fillOpacity: 1,
       stroke: false
-  });
-}
-}).addTo(map);
+    });
+  }
+});
 fetch('commerces.geojson')
-  .then(response => response.json())  
+  .then(response => response.json())
   .then(data => shopsLayer.addData(data))
 
 // Define a variable to store the selected shop type
 let selectedShopType = 'all';
 
 // Add an event listener to the dropdown list
-document.getElementById('shop-type').addEventListener('change', function(event) {
+document.getElementById('shop-type').addEventListener('change', function (event) {
   // Update the selected shop type variable
   selectedShopType = event.target.value;
 
   // Recalculate the statistics for the selected shops
-  const selectedShops = calculateStatistics();
-
-  // Calculate the statistics for the selected shops
-  const surfaceDensity = calculateSurfaceDensity(selectedShops, neighborhoodsLayer);
-  const websiteDensity = calculateWebsiteDensity(selectedShops);
-
-  // Update the HTML elements with the calculated statistics
-  surfaceDensityElement.textContent = `Surface density: ${surfaceDensity}`;
-  websiteDensityElement.textContent = `Website density: ${websiteDensity}`;
+  updateStatistics();
 });
+// Define the URLs for the GeoJSON files
+const geoJsonUrl1 = "commerces.json";
+const geoJsonUrl2 = "quartier_paris.json";
 
-// Modify the calculateStatistics() function to only include shops of the selected type
-function calculateStatistics() {
-  // Get the selected shops from the GeoJSON data
-  const selectedShops = shopsLayer.getLayers().filter(function(layer) {
-    if (selectedShopType === 'all') {
-      // Include all shops if 'All' is selected
-      return true;
+// Load the GeoJSON data using AJAX requests
+const xhr1 = new XMLHttpRequest();
+xhr1.open("GET", geoJsonUrl1);
+xhr1.responseType = "json";
+xhr1.onreadystatechange = function () {
+  if (xhr1.readyState === XMLHttpRequest.DONE) {
+    if (xhr1.status === 200) {
+      const geoJsonData1 = xhr1.response;
+      // Process the first GeoJSON data here
+      console.log(geoJsonData1);
     } else {
-      // Only include shops of the selected type
-      return layer.feature.properties.type_de_commerce === selectedShopType;
+      console.error("Error loading GeoJSON 1:", xhr1.status);
     }
-  });
-
-  return selectedShops;
-}
-
-// Define functions to calculate the statistics
-function calculateSurfaceDensity(selectedShops, neighborhoodsLayer) {
-  if (!Array.isArray(neighborhoodsLayer)) {
-    return 0; // or some other default value
   }
-  const totalArea = neighborhoodsLayer.reduce((sum, neighborhood) => sum + neighborhood.properties.area, 0);
-  const totalSelectedArea = selectedShops.reduce((sum, shop) => sum + turf.area(shop), 0);
-  return totalSelectedArea / totalArea;
-}
+};
+xhr1.send();
 
-function calculateWebsiteDensity(selectedShops) {
-    const totalSelectedShops = selectedShops.length;
-    const totalSelectedShopsWithoutWebsite = selectedShops.reduce((sum, shop) => sum + (shop.properties.site_internet ?? false ? 0 : 1), 0);
-    return totalSelectedShopsWithoutWebsite / totalSelectedShops;
+const xhr2 = new XMLHttpRequest();
+xhr2.open("GET", geoJsonUrl2);
+xhr2.responseType = "json";
+xhr2.onreadystatechange = function () {
+  if (xhr2.readyState === XMLHttpRequest.DONE) {
+    if (xhr2.status === 200) {
+      const geoJsonData2 = xhr2.response;
+      // Process the second GeoJSON data here
+      console.log(geoJsonData2);
+    } else {
+      console.error("Error loading GeoJSON 2:", xhr2.status);
+    }
   }
+};
+xhr2.send();
 
-// Get references to the HTML elements
-const surfaceDensityElement = document.getElementById("surfaceDensity");
-const websiteDensityElement = document.getElementById("websiteDensity");
-
-// Define a function to update the HTML elements with the calculated statistics
+// Define a function to make an AJAX request to the PHP file and update the statistics
 function updateStatistics() {
-  // Recalculate the statistics for the selected shops
-  const selectedShops = calculateStatistics();
+  // Make an AJAX request to the PHP file
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', 'mydata.php', true);
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      // Parse the JSON response
+      var response = JSON.parse(xhr.responseText);
 
-  // Calculate the statistics for the selected shops
-  const surfaceDensity = calculateSurfaceDensity(selectedShops, neighborhoodsLayer);
-  const websiteDensity = calculateWebsiteDensity(selectedShops);
-
-  // Update the HTML elements with the calculated statistics
-  surfaceDensityElement.textContent = `Surface density: ${surfaceDensity}`;
-  websiteDensityElement.textContent = `Website density: ${websiteDensity}`;
+      // Update the HTML elements with the calculated statistics
+      document.getElementById('websiteDensity').textContent = 'Website density: ' + response.websiteDensity;
+      document.getElementById('deliveryShops').textContent = 'Delivery shops: ' + response.deliveryShops;
+      document.getElementById('parisianShops').textContent = 'Parisian shops: ' + response.parisianShops;
+      document.getElementById('pickupShops').textContent = 'Pickup shops: ' + response.pickupShops;
+    }
+  };
+  xhr.send();
 }
 
-function updateStatistics() {
-    // Recalculate the statistics for the selected shops
-    const selectedShops = calculateStatistics();
-  
-    // Calculate the statistics for the selected shops
-    const surfaceDensity = calculateSurfaceDensity(selectedShops, neighborhoodsLayer);
-    const websiteDensity = calculateWebsiteDensity(selectedShops);
-  
-    // Get references to the HTML elements
-    const surfaceDensityElement = document.getElementById("surfaceDensity");
-    const websiteDensityElement = document.getElementById("websiteDensity");
-  
-    // Update the HTML elements with the calculated statistics
-    surfaceDensityElement.textContent = `Surface density: ${surfaceDensity}`;
-    websiteDensityElement.textContent = `Website density: ${websiteDensity}`;
-  }
-  
+// Call the function to update the statistics
+updateStatistics();
 
 
