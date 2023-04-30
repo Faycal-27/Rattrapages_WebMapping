@@ -3,7 +3,7 @@
 $host = 'localhost';
 $username = 'postgres';
 $password = 'postgres';
-$database = 'paris';
+$database = 'WebMapping';
 
 // Connect to PostgreSQL database
 $conn = pg_connect("host=$host dbname=$database user=$username password=$password");

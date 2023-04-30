@@ -1,13 +1,7 @@
 <?php
 
 // Connect to the database
-$dbconn = pg_connect("host=localhost dbname=postgres user=postgres");
-
-// Check connection and display error message if applicable
-if (!$dbconn) {
-    $errorMessage = pg_last_error();
-    die("Connection failed: $errorMessage");
-}
+$dbconn = pg_connect("host=localhost dbname=WebMapping user=postgres password=postgres");
 
 // Create the shops table
 pg_query($dbconn, "CREATE TABLE shops (
