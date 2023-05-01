@@ -3,16 +3,19 @@
 $host = 'localhost';
 $username = 'postgres';
 $password = 'usercode';
-$port = '5433';
 $database = 'postgres';
 
-// Connect to PostgreSQL database
-$conn = pg_connect("host=$host port=$port dbname=$database user=$username password=$password");
+$conn_string = "host=$host dbname=$database user=$username password=$password";
+
+$conn = pg_connect($conn_string);
 
 // Check connection
 if (!$conn) {
     echo "Failed to connect to database";
- }
+} else {
+    echo "Connected successfully";
+}
+
 // Create the shops table
 pg_query($conn, "CREATE TABLE shops (
     id SERIAL PRIMARY KEY,
@@ -39,7 +42,7 @@ foreach ($shops_data['features'] as $shop) {
     $address = pg_escape_string($shop['properties']['adresse']);
     $postal_code = pg_escape_string($shop['properties']['code_postal']);
     $type = pg_escape_string($shop['properties']['type_de_commerce']);
-    $made_in_paris = $shop['properties']['fabrique_a_paris'] == 'oui' ? true : false;
+    $made_in_paris = ($shop['properties']['fabrique_a_paris'] == 'oui') ? 'true' : 'false';
     $services = pg_escape_string($shop['properties']['services']);
     $description = pg_escape_string($shop['properties']['description']);
     $website = pg_escape_string($shop['properties']['site_internet']);
@@ -48,9 +51,12 @@ foreach ($shops_data['features'] as $shop) {
     $latitude = $shop['geometry']['coordinates'][1];
     $longitude = $shop['geometry']['coordinates'][0];
     $query = "INSERT INTO shops (name, address, postal_code, type, made_in_paris, services, description, website, phone, email, latitude, longitude)
-              VALUES ('$name', '$address', '$postal_code', '$type', '$made_in_paris', '$services', '$description', '$website', '$phone', '$email', '$latitude', '$longitude')";
-    pg_query($dbconn, $query);
+          VALUES ('$name', '$address', '$postal_code', '$type', $made_in_paris, '$services', '$description', '$website', '$phone', '$email', '$latitude', '$longitude')";
+    pg_query($conn, $query);
 }
+
+// Ensure the PostGIS extension is available
+pg_query($conn, "CREATE EXTENSION IF NOT EXISTS postgis");
 
 // Create the neighbors table
 pg_query($conn, "CREATE TABLE neighbors (
@@ -66,7 +72,7 @@ foreach ($neighbors_data['features'] as $neighbor) {
     $geometry = json_encode($neighbor['geometry']);
     $query = "INSERT INTO neighbors (geometry)
               VALUES (ST_SetSRID(ST_GeomFromGeoJSON('$geometry'), 4326))";
-    pg_query($dbconn, $query);
+    pg_query($conn, $query);
 }
 
 // Query to retrieve neighborhoods data
